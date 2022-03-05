@@ -1,9 +1,14 @@
 input.onButtonPressed(Button.A, function () {
     if (Posisjon > -1) {
+        syklus += -5
         Posisjon += -1
         basic.clearScreen()
         led.plot(Posisjon, 4)
     }
+})
+input.onButtonPressed(Button.AB, function () {
+    Miss = 0
+    Score = 0
 })
 input.onButtonPressed(Button.B, function () {
     if (Posisjon < 5) {
@@ -12,83 +17,38 @@ input.onButtonPressed(Button.B, function () {
         led.plot(Posisjon, 4)
     }
 })
+let DråpeXMidlertidig = 0
+let Score = 0
+let Miss = 0
 let Posisjon = 0
+radio.setGroup(1)
 Posisjon = 2
 let DråpePos = randint(2, 2)
-let Dråpe0 = -1
-let Dråpe1 = -1
-let Dråpe2 = -1
-let Dråpe3 = -1
-let Dråpe4 = -1
+let DråpeX = -1
 let syklus = 500
+Miss = 0
+Score = 0
 basic.forever(function () {
-    basic.pause(syklus)
-    syklus += -2
-    basic.clearScreen()
-    led.plot(Posisjon, 4)
-    if (DråpePos == 0) {
-        Dråpe0 += 1
-        led.plot(DråpePos, Dråpe0)
-        if (Dråpe0 == 4) {
+    while (Miss <= 2) {
+        basic.pause(syklus)
+        basic.clearScreen()
+        led.plot(Posisjon, 4)
+        DråpeX += 1
+        led.plot(DråpePos, DråpeX)
+        if (DråpeX == 4) {
             if (Posisjon == DråpePos) {
                 soundExpression.hello.play()
+                Score += 1
             } else {
                 soundExpression.sad.play()
+                Miss += 1
             }
-            DråpePos = randint(0, 4)
-            Dråpe0 = -1
+            DråpeX = -1
+            DråpeXMidlertidig = DråpePos
+            while (DråpeXMidlertidig == DråpePos) {
+                DråpePos = randint(0, 4)
+            }
         }
     }
-    if (DråpePos == 1) {
-        Dråpe1 += 1
-        led.plot(DråpePos, Dråpe1)
-        if (Dråpe1 == 4) {
-            if (Posisjon == DråpePos) {
-                soundExpression.hello.play()
-            } else {
-                soundExpression.sad.play()
-            }
-            DråpePos = randint(0, 4)
-            Dråpe1 = -1
-        }
-    }
-    if (DråpePos == 2) {
-        Dråpe2 += 1
-        led.plot(DråpePos, Dråpe2)
-        if (Dråpe2 == 4) {
-            if (Posisjon == DråpePos) {
-                soundExpression.hello.play()
-            } else {
-                soundExpression.sad.play()
-            }
-            DråpePos = randint(0, 4)
-            Dråpe2 = -1
-        }
-    }
-    if (DråpePos == 3) {
-        Dråpe3 += 1
-        led.plot(DråpePos, Dråpe3)
-        if (Dråpe3 == 4) {
-            if (Posisjon == DråpePos) {
-                soundExpression.hello.play()
-            } else {
-                soundExpression.sad.play()
-            }
-            DråpePos = randint(0, 4)
-            Dråpe3 = -1
-        }
-    }
-    if (DråpePos == 4) {
-        Dråpe4 += 1
-        led.plot(DråpePos, Dråpe4)
-        if (Dråpe4 == 4) {
-            if (Posisjon == DråpePos) {
-                soundExpression.giggle.play()
-            } else {
-                soundExpression.sad.play()
-            }
-            DråpePos = randint(0, 4)
-            Dråpe4 = -1
-        }
-    }
+    basic.showNumber(Score)
 })
